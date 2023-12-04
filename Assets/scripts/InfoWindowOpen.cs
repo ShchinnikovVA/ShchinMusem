@@ -21,4 +21,9 @@ public class InfoWindowOpen : MonoBehaviour
     {
         _startPositionY = this.transform.position.y;
     }
+    public void FastStartPosition()
+    {
+        this.transform.position = new Vector2(0, _startPositionY);
+    }
+
 }

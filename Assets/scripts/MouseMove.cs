@@ -7,6 +7,8 @@ using DG.Tweening;
 
 public class MouseMove : MonoBehaviour
 {
+    [Header("Сохранение очков")]
+    public ScoreSaver scoreSaver;
     [Header("Галочка")]
     public GameObject doneImg;
     [Header("Параметры дома")]
@@ -44,6 +46,7 @@ public class MouseMove : MonoBehaviour
     }
     private void OnMouseUp() //Мышь отжата - возврат картинки
     {
+        timerPrompt.SM_start();
         _isDrag = false;
         if (_isCollision == null)
         {
@@ -69,6 +72,8 @@ public class MouseMove : MonoBehaviour
             _isCanDrag = false;
             infoWindow.ShowWindow();
             collision.GetComponent<Collider2D>().enabled = false;
+            scoreSaver.SavePlayerScore(scoreForTheStreet);
+            scoreSaver.TextUpdate();
         }
         else // Если коллайдер, которого мы касаемся, не подходит по номеру
         {
@@ -82,5 +87,7 @@ public class MouseMove : MonoBehaviour
     public void HideDoneImg()
     {
         doneImg.SetActive(false);
+        _isCanDrag = false;
     }
+    public void CanDrag() => _isCanDrag = true;
 }

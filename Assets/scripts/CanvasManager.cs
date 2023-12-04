@@ -10,6 +10,7 @@ public class CanvasManager : MonoBehaviour
     [Header("Окно регистрации")]
     public GameObject registerWindow;
     public InputField inputField;
+    public Text placeholder;
     [Header("Галерея")]
     public GameObject photoGalery;
     //public Image[] photoElements;
@@ -18,9 +19,12 @@ public class CanvasManager : MonoBehaviour
     [Header("Окно выхода в меню")]
     public GameObject exitToGaleryWindow;
     [Header("Окно выхода из игры")]
+    public GameObject exitToMenuButton;
     public GameObject exitAppWindow;
     [Header("Запуск таймера подсказки")]
     public TimerPrompt timerPrompt;
+    [Header("Новый игрок")]
+    public ScoreSaver scoreSaver;
     #region Show/Hide Windows
     public void ShowLogWindow()
     {
@@ -29,9 +33,22 @@ public class CanvasManager : MonoBehaviour
     }
     public void StartGame()
     {
-        registerWindow.GetComponent<RectTransform>().DOLocalMoveY(-windowCord, 1.0f).SetEase(Ease.InExpo);
-        timerPrompt.NewStart();
-        HideAllImages();
+        if (inputField.text != "")
+        {
+            scoreSaver.NewGame();
+            scoreSaver.SavePlayerName();
+            registerWindow.GetComponent<RectTransform>().DOLocalMoveY(-windowCord, 1.0f).SetEase(Ease.InExpo);
+            timerPrompt.NewStart();
+            timerPrompt.SM_start();
+            HideAllImages();
+            exitToMenuButton.SetActive(true);
+            placeholder.text = "Ваше имя...";
+        }
+        else
+        {
+            placeholder.text = "Введите ваше имя!";
+        }
+        
     }
     public void ShowInfoWindow()
     {
@@ -40,6 +57,8 @@ public class CanvasManager : MonoBehaviour
     }
     public void Expentation()
     {
+        scoreSaver.TextUpdate(0);
+        timerPrompt.SM_StopTimer();
         HideAllImages();
         registerWindow.GetComponent<RectTransform>().localPosition = new Vector2(0, -windowCord);
         educationWindow.GetComponent<RectTransform>().localPosition = new Vector2(0, -windowCord);
@@ -54,7 +73,7 @@ public class CanvasManager : MonoBehaviour
 
 
     #region DoneImages
-    [Header("Запуск таймера подсказки")]
+    [Header("Элементы для взаимодействия")]
     public MouseMove[] houseImg;
     public StreetID[] streets;
     private void HideAllImages()
@@ -62,10 +81,12 @@ public class CanvasManager : MonoBehaviour
         for (int i = 0; i < houseImg.Length; i++)
         {
             houseImg[i].HideDoneImg();
+            houseImg[i].CanDrag();
         }
         for (int i = 0; i < streets.Length; i++)
         {
             streets[i].HideDoneButton();
+            streets[i].GetComponent<Collider2D>().enabled = true;
         }
     }
     #endregion
