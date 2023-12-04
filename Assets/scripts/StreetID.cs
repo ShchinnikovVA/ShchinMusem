@@ -7,12 +7,13 @@ public class StreetID : MonoBehaviour
     public int streetID = 0;
     public GameObject doneButton;
     
-
     private void Start()
     {
-        //print(doneButton.transform.rotation);
-        //doneButton.transform.rotation = new Quaternion(0, 0, 0, 0);
-        //print(doneButton.transform.rotation);
+        HideDoneButton();
+        this.GetComponent<Collider2D>().enabled = true;
+    }
+    public void HideDoneButton()
+    {
         doneButton.SetActive(false);
     }
 }

@@ -8,7 +8,7 @@ public class GaleryBox : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public Image[] galeryPhotos;
-    private Image[] _GaleryItems;
+    //private Image[] _GaleryItems;
     [Header("Границы галерееи")]
     public float leftBorder = -2600;
     public float padding = 50;

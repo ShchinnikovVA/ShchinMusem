@@ -12,7 +12,7 @@ public class MouseMove : MonoBehaviour
     [Header("Параметры дома")]
     public int myID = 0;
     public int scoreForTheStreet = 2;
-    public float moveSpeed = 50f;
+    //public float moveSpeed = 50f;
     [Header("Карточка дома")]
     public InfoWindowOpen infoWindow;
     [Header("Контролер паузы")]
@@ -25,19 +25,22 @@ public class MouseMove : MonoBehaviour
     private void Start()
     {
         _isCollision = null;
-        doneImg.SetActive(false);
+        HideDoneImg();
         _startPosition = this.transform.position;
         _startPosition.z = 0;
     }
     private void OnMouseDrag() //Если мышь нажата и можно двигать объект
     {
+        //var txt = "Не выполнено";
         if (_isCanDrag && !timerPrompt.GetBoolPause())
         {
             //this.transform.position = Vector3.MoveTowards(this.transform.position, GetMousePosition(), moveSpeed * Time.deltaTime);
             this.transform.position = GetMousePosition();
             _isDrag = true;
             _isCanTriggered = true;
+            //txt = "Выполнено";
         }
+        //print("Нажатие считывается. Условие: " + txt);
     }
     private void OnMouseUp() //Мышь отжата - возврат картинки
     {
@@ -65,6 +68,7 @@ public class MouseMove : MonoBehaviour
             doneImg.SetActive(true);
             _isCanDrag = false;
             infoWindow.ShowWindow();
+            collision.GetComponent<Collider2D>().enabled = false;
         }
         else // Если коллайдер, которого мы касаемся, не подходит по номеру
         {
@@ -75,4 +79,8 @@ public class MouseMove : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision) => _isCollision = null; //Когда мы выходим из коллайдера, обнуляем проверяющее поле
     private void MoveObjectToStart() => this.transform.DOMove(_startPosition, 1f); //Возврат картинки на место
   
+    public void HideDoneImg()
+    {
+        doneImg.SetActive(false);
+    }
 }
