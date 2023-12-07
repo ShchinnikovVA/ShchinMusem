@@ -91,7 +91,7 @@ public class TimerPrompt : MonoBehaviour
         }
 
         _s_SM -= 1;
-        print(_m_SM + ":" + _s_SM);
+        //print(_m_SM + ":" + _s_SM);
         if (_m_SM <= 0 && _s_SM <= 30)
         {
             SM_text.gameObject.SetActive(true);

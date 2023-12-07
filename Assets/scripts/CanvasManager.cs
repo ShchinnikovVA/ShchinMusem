@@ -21,6 +21,8 @@ public class CanvasManager : MonoBehaviour
     [Header("Окно выхода из игры")]
     public GameObject exitToMenuButton;
     public GameObject exitAppWindow;
+    [Header("Окно рекордов")]
+    public GameObject recordsWindow;
     [Header("Запуск таймера подсказки")]
     public TimerPrompt timerPrompt;
     [Header("Новый игрок")]
@@ -57,7 +59,9 @@ public class CanvasManager : MonoBehaviour
     }
     public void Expentation()
     {
+        scoreSaver.SaveToList();
         scoreSaver.TextUpdate(0);
+        scoreSaver.SaveAllPlayerProperties("/musemSaveData.txt");
         timerPrompt.SM_StopTimer();
         HideAllImages();
         registerWindow.GetComponent<RectTransform>().localPosition = new Vector2(0, -windowCord);
@@ -65,10 +69,16 @@ public class CanvasManager : MonoBehaviour
         photoGalery.GetComponent<RectTransform>().DOLocalMoveY(0, 1.0f).SetEase(Ease.OutQuint);
         inputField.text = "";
     }
+    public void NameLenght()
+    {
+        if (inputField.text.Length > 20) inputField.text = inputField.text.Substring(0, 20);
+    }
     public void ShowExitWindow() => exitToGaleryWindow.GetComponent<RectTransform>().DOLocalMoveY(0, 2f).SetEase(Ease.OutQuad);
     public void HideExitWindow() => exitToGaleryWindow.GetComponent<RectTransform>().DOLocalMoveY(-windowCord, 1.0f).SetEase(Ease.InExpo);
     public void ShowExitAppWindow() => exitAppWindow.GetComponent<RectTransform>().DOLocalMoveY(0, 2f).SetEase(Ease.OutQuad);
     public void HideExitAppWindow() => exitAppWindow.GetComponent<RectTransform>().DOLocalMoveY(-windowCord, 1.0f).SetEase(Ease.InExpo);
+    public void ShowRecordWindow() => recordsWindow.GetComponent<RectTransform>().DOLocalMoveY(0, 1f).SetEase(Ease.OutQuad);
+    public void HideRecordWindow() => recordsWindow.GetComponent<RectTransform>().DOLocalMoveY(-windowCord, 1.0f).SetEase(Ease.InExpo);
     #endregion
 
 
