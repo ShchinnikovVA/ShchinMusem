@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEditor.EventSystems;
 using DG.Tweening;
 
 public class MouseMove : MonoBehaviour
@@ -19,6 +18,8 @@ public class MouseMove : MonoBehaviour
     public InfoWindowOpen infoWindow;
     [Header("Контролер паузы")]
     public TimerPrompt timerPrompt;
+    [Header("Отправка сигнала о победе")]
+    public CanvasManager canvasManager;
     private bool _isCanDrag = true;
     private bool _isDrag, _isCanTriggered = false;
     private Vector3 _startPosition;
@@ -48,11 +49,18 @@ public class MouseMove : MonoBehaviour
     {
         timerPrompt.SM_start();
         _isDrag = false;
+        
         if (_isCollision == null)
         {
             MoveObjectToStart(); //Если мы не касаемся коллайдеров
-            _isCanTriggered = false;
+            StartCoroutine("DragTimer");
         }
+    }
+    IEnumerator DragTimer() // починить код
+    {
+        yield return new WaitForSeconds(0.5f);
+        _isCanTriggered = false;
+        StopCoroutine("DragTimer");
     }
     private Vector3 GetMousePosition() // Получаем позицию мыши
     {
@@ -74,10 +82,12 @@ public class MouseMove : MonoBehaviour
             collision.GetComponent<Collider2D>().enabled = false;
             scoreSaver.SavePlayerScore(scoreForTheStreet);
             scoreSaver.TextUpdate();
+            canvasManager.allStreetsDone += 1;
+            canvasManager.WinGame();
         }
         else // Если коллайдер, которого мы касаемся, не подходит по номеру
         {
-           if (!_isDrag) MoveObjectToStart();
+            if (!_isDrag) MoveObjectToStart();
             _isCanTriggered = false;
         }
     }

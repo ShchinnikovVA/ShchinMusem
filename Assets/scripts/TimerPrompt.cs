@@ -46,20 +46,24 @@ public class TimerPrompt : MonoBehaviour
         
         timerText.text = new string(_m + ":" + _Sstr);
 
-        if(_m <= 0 && _s == 0)
+        if(_m <= 0 && _s <= 0)
         {
             pointsMultiplier = false;
             Clue(imgStreets);
             _isStop = true;
             StopCoroutine("TimerClue");
+            timerText.text = "0:00";
         }
         else if (!_isStop) StartCoroutine("TimerClue");
     }
     public void SetPause(bool isPaused)
     {
-        _isPaused = isPaused;
-        if (!_isPaused) StartCoroutine("TimerClue");
-        else StopCoroutine("TimerClue");
+        if (_isPaused != isPaused)
+        {
+            _isPaused = isPaused; // решение проблемы с многократным запуском таймера
+            if (!_isPaused) StartCoroutine("TimerClue");
+            else StopCoroutine("TimerClue");
+        }
     }
     public bool GetBoolPause() => _isPaused;
     public bool GetBoolMultiplier() => pointsMultiplier;

@@ -20,7 +20,7 @@ public class ScoreSaver : MonoBehaviour
     [Header("Ссылки")]
     public TimerPrompt timerPrompt;
     public InputField nameStr;
-    public Text bg_score, ew_score;
+    public Text bg_score, ew_score, wn_score;
     [Header("Текст имя и счёт")]
     public Text[] textName = new Text[10];
     public Text[] textRecord = new Text[10];
@@ -29,7 +29,12 @@ public class ScoreSaver : MonoBehaviour
     public Player[] players = new Player[10];
     private Player thisPlayer;
     #region Saver
-    public void NewGame() => thisPlayer = new Player();
+    public void NewGame()
+    {
+        thisPlayer = new Player();
+        //players = new Player[10];
+    }
+
     public void SavePlayerName() => thisPlayer.playerName = nameStr.text;
     public void SavePlayerScore(int _score)
     {
@@ -40,11 +45,13 @@ public class ScoreSaver : MonoBehaviour
     {
         bg_score.text = new string("Очки: " + thisPlayer.score);
         ew_score.text = new string("Вы набрали " + thisPlayer.score + " баллов");
+        wn_score.text = new string("Вы набрали " + thisPlayer.score + " баллов!");
     }
     public void TextUpdate(int _score)
     {
         bg_score.text = new string("Очки: " + _score);
         ew_score.text = new string("Вы набрали " + _score + " баллов");
+        wn_score.text = new string("Вы набрали " + _score + " баллов!");
     }
     public void SaveAllPlayerProperties(string patchname)
     {
@@ -101,13 +108,16 @@ public class ScoreSaver : MonoBehaviour
         {
             players = LoadPlayerList();
         }
-        for (int i = 0; i < players.Length; i++)
+        else
         {
-            if (players[i] == null)
+            for (int i = 0; i < players.Length; i++)
             {
-                players[i] = new Player();
-                players[i].playerName = "Фамилия Имя Отчество";
-                players[i].score = 0;
+                if (players[i] == null)
+                {
+                    players[i] = new Player();
+                    players[i].playerName = "Фамилия Имя Отчество";
+                    players[i].score = 0;
+                }
             }
         }
         SortPlayerList();
@@ -123,7 +133,7 @@ public class ScoreSaver : MonoBehaviour
     {
         bool _isPassword = false;
         bool _isCount = false;
-        if (inputPassword.text != "vhj14gbd73") warningText.SetActive(true);
+        if (inputPassword.text != "нру14тое73") warningText.SetActive(true);
         else _isPassword = true;
         switch (inputCount.text)
         {
@@ -205,7 +215,7 @@ public class ScoreSaver : MonoBehaviour
             SortPlayerList();
             inputCount.text = "";
             inputPassword.text = "";
-            warningText.SetActive(true);
+            warningText.SetActive(false);
             SaveAllPlayerProperties("/musemSaveData.txt");
         }
     }

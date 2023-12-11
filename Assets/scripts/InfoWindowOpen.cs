@@ -5,12 +5,16 @@ using DG.Tweening;
 
 public class InfoWindowOpen : MonoBehaviour
 {
+    public CanvasManager canvasManager;
     public TimerPrompt timerPrompt;
     private float _startPositionY;
     public void ShowWindow()
     {
-        timerPrompt.SetPause(true);
-        this.transform.DOMoveY(0, 1f);
+        if (!canvasManager.isExitWindow)
+        {
+            timerPrompt.SetPause(true);
+            this.transform.DOMoveY(0, 1f);
+        }
     }
     public void CloseWindow()
     {
