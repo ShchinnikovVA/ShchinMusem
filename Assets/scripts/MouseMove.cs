@@ -23,11 +23,11 @@ public class MouseMove : MonoBehaviour
     private bool _isCanDrag = true;
     private bool _isDrag, _isCanTriggered = false;
     private Vector3 _startPosition;
-    private Collider2D _isCollision;
+    //private Collider2D _isCollision;
 
     private void Start()
     {
-        _isCollision = null;
+        //_isCollision = null;
         HideDoneImg();
         _startPosition = this.transform.position;
         _startPosition.z = 0;
@@ -50,15 +50,15 @@ public class MouseMove : MonoBehaviour
         timerPrompt.SM_start();
         _isDrag = false;
         
-        if (_isCollision == null)
-        {
-            MoveObjectToStart(); //Если мы не касаемся коллайдеров
-            StartCoroutine("DragTimer");
-        }
+        //if (_isCollision == null)
+        //{
+        MoveObjectToStart(); //Если мы не касаемся коллайдеров
+        StartCoroutine("DragTimer");
+        //}
     }
     IEnumerator DragTimer() // починить код
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.1f);
         _isCanTriggered = false;
         StopCoroutine("DragTimer");
     }
@@ -70,11 +70,11 @@ public class MouseMove : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision) 
     {
-        if(collision.tag == "Street") _isCollision = collision;
+        //if(collision.tag == "Street") _isCollision = collision;
         //print(_isCollision + " ВОШЁЛ " + collision.GetComponent<StreetID>().streetID);
         if (collision.tag == "Street" && collision.GetComponent<StreetID>().streetID == myID && !_isDrag && _isCanTriggered)
         {
-            MoveObjectToStart();
+            //MoveObjectToStart();
             collision.GetComponent<StreetID>().doneButton.SetActive(true);
             doneImg.SetActive(true);
             _isCanDrag = false;
@@ -84,14 +84,15 @@ public class MouseMove : MonoBehaviour
             scoreSaver.TextUpdate();
             canvasManager.allStreetsDone += 1;
             canvasManager.WinGame();
-        }
-        else // Если коллайдер, которого мы касаемся, не подходит по номеру
-        {
-            if (!_isDrag) MoveObjectToStart();
             _isCanTriggered = false;
         }
+        //else // Если коллайдер, которого мы касаемся, не подходит по номеру
+        //{
+        //    if (!_isDrag) MoveObjectToStart();
+        //    _isCanTriggered = false;
+        //}
     }
-    private void OnTriggerExit2D(Collider2D collision) => _isCollision = null; //Когда мы выходим из коллайдера, обнуляем проверяющее поле
+    //private void OnTriggerExit2D(Collider2D collision) => _isCollision = null; //Когда мы выходим из коллайдера, обнуляем проверяющее поле
     private void MoveObjectToStart() => this.transform.DOMove(_startPosition, 1f); //Возврат картинки на место
   
     public void HideDoneImg()

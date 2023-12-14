@@ -32,6 +32,7 @@ public class ScoreSaver : MonoBehaviour
     public void NewGame()
     {
         thisPlayer = new Player();
+        //SaveAllPlayerProperties("/musemSaveData.txt");
         //players = new Player[10];
     }
 
@@ -63,7 +64,7 @@ public class ScoreSaver : MonoBehaviour
     }
     public static Player[] LoadPlayerList()
     {
-        string savepatch = Application.persistentDataPath + "/musemSaveData.txt";
+        string savepatch = Application.persistentDataPath + @"..\BuildMusem\musemSaveData.txt";
         if (File.Exists(savepatch))
         {
             BinaryFormatter formatter = new BinaryFormatter();
@@ -107,6 +108,7 @@ public class ScoreSaver : MonoBehaviour
         if (LoadPlayerList() != null)
         {
             players = LoadPlayerList();
+            print("Загрузилость");
         }
         else
         {
@@ -119,6 +121,8 @@ public class ScoreSaver : MonoBehaviour
                     players[i].score = 0;
                 }
             }
+            //SaveAllPlayerProperties(@"..\musemSaveData.txt");
+            print("Не загрузилось");
         }
         SortPlayerList();
     }
@@ -216,7 +220,7 @@ public class ScoreSaver : MonoBehaviour
             inputCount.text = "";
             inputPassword.text = "";
             warningText.SetActive(false);
-            SaveAllPlayerProperties("/musemSaveData.txt");
+            SaveAllPlayerProperties(@"..\BuildMusem\musemSaveData.txt");
         }
     }
     #endregion

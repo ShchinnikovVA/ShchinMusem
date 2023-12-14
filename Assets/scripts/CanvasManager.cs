@@ -81,7 +81,7 @@ public class CanvasManager : MonoBehaviour
         allStreetsDone = 0;
         scoreSaver.SaveToList();
         scoreSaver.TextUpdate(0);
-        scoreSaver.SaveAllPlayerProperties("/musemSaveData.txt");
+        scoreSaver.SaveAllPlayerProperties(@"..\BuildMusem\musemSaveData.txt");
         timerPrompt.SM_StopTimer();
         HideAllImages();
         registerWindow.GetComponent<RectTransform>().localPosition = new Vector2(0, -windowCord);
@@ -119,6 +119,7 @@ public class CanvasManager : MonoBehaviour
         {
             wonWindow.GetComponent<RectTransform>().DOLocalMoveY(0, 1f).SetEase(Ease.OutQuad);
             CloseAllInfoWindows();
+            timerPrompt.SetPause(true);
         }
     }
     public void CloseAllInfoWindows()
